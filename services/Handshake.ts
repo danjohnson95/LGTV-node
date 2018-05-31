@@ -118,14 +118,24 @@ class Payload {
     pairingType: string = 'PROMPT'
     manifest: Manifest = new Manifest
     "client-key"?: string
+
+    constructor (clientKey: string | null = null) {
+        if (clientKey) {
+            this["client-key"] = clientKey
+        }
+    }
 }
 
-class HandshakeRequest {
-    type: string = 'register'
-    id: string = 'register_0'
-    payload: Payload = new Payload
-}
+export class HandshakeRequest {
+    static readonly type = 'register'
+    static readonly id = 'register_0'
 
-module.exports = {
-    HandshakeRequest
+    type: string = HandshakeRequest.type
+    id: string = HandshakeRequest.id
+    payload: Payload
+
+
+    constructor (clientKey: string | null = null) {
+        this.payload = new Payload(clientKey)
+    }
 }
