@@ -1,5 +1,5 @@
 import * as lgtv from 'lgtv'
-import { Connection } from './Connection'
+import { Connection, CommandTypes } from './Connection'
 
 export class LGTV {
     private connection: Connection
@@ -11,42 +11,40 @@ export class LGTV {
         this.connection = new Connection(this.hostname)
     }
 
+    connect (): Promise<void> {
+        return this.connection.connect()
+    }
 
     disconnect (): Promise<void> {
-        return new Promise((resolve: any, reject: any) => {
-            lgtv.disconnect((success: boolean) => {
-                return success ? resolve() : reject()
-            })
-        })
+        return this.connection.disconnect()
+    }
+
+    turnOn (): void {
+        // TODO: Send magic packet.
     }
 
     turnOff (): Promise<any> {
-        return new Promise((resolve: any, reject: any) => {
-            lgtv.turn_off((err: any, response: any) => {
-                if (err) {
-                    return reject(err)
-                }
-
-                return resolve(response)
-            })
-        })
+        return this.connection.sendCommand('', CommandTypes.Request, 'ssap://system/turnOff')
     }
 
     displayMessage (message: string): Promise<any> {
-        return new Promise((resolve: any, reject: any) => {
-            lgtv.show_float(message, (err: any, response: any) => {
-                if (err) {
-                    return reject(err)
-                }
-
-                resolve(response)
-            })
-        })
+        const payload = { message }
+        
+        return this.connection.sendCommand('', CommandTypes.Request, 'ssap://system.notifications/createToast', payload)
     }
 
-    getCurrentChannel (): Promise<any> {
-        return new Promise((resolve: any, reject: any) => {
-            lgtv.channel()
-        })
+    setVolume (volume: number): Promise<any> {
+        const payload = { volume }
+
+        return this.connection.sendCommand('', CommandTypes.Request, 'ssap://audio/setVolume', payload)
     }
+
+    volumeUp (): Promise<any> {
+        return this.connection.sendCommand('volumeup_', CommandTypes.Request, 'ssap://audio/volumeUp')
+    }
+
+    volumeDown (): Promise<any> {
+        return this.connection.sendCommand('volumedown_', CommandTypes.Request, 'ssap://audio/volumeDown')
+    }
+
 }

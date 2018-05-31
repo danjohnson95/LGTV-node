@@ -11,7 +11,7 @@ export interface CommandBody {
     payload?: string
 }
 
-enum CommandTypes {
+export enum CommandTypes {
     Request = 'request',
     Subscribe = 'subscribe'
 }
