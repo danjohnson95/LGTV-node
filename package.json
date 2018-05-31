@@ -1,0 +1,19 @@
+{
+  "name": "lgtv-promise",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "@types/events": "^1.2.0",
+    "@types/websocket": "0.0.39",
+    "events": "^3.0.0",
+    "lgtv": "^0.2.4",
+    "websocket": "^1.0.26"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
